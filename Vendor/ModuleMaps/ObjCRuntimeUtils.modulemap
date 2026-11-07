@@ -1,0 +1,4 @@
+framework module ObjCRuntimeUtils {
+  header "RuntimeUtils.h"
+  export *
+}

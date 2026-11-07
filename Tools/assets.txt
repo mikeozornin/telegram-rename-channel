@@ -1,0 +1,35 @@
+Chat List/Tabs/IconContacts
+Chat List/Tabs/IconCalls
+Chat List/Tabs/IconChats
+Chat List/Tabs/IconSettings
+Chat List/ComposeIcon
+Chat List/PeerMutedIcon
+Chat List/PeerPinnedIcon
+Components/Search Bar/Loupe
+Components/Search Bar/Clear
+Navigation/Back
+Chat/Context Menu/MarkAsRead
+Chat/Context Menu/Pin
+Chat/Context Menu/Unpin
+Chat/Context Menu/Muted
+Chat/Context Menu/Unmute
+Chat/Context Menu/Delete
+Chat/Context Menu/Edit
+Chat/Context Menu/Pencil
+Chat/Context Menu/Gift
+Chat/Context Menu/Boost
+Chat/Context Menu/Report
+Chat/Context Menu/ClearMessages
+Chat/Context Menu/Logout
+Chat/Context Menu/Search
+Chat/Context Menu/Share
+Peer Info/ButtonMute
+Peer Info/ButtonUnmute
+Peer Info/ButtonSearch
+Peer Info/ButtonLeave
+Peer Info/ButtonMore
+Chat List/SearchIcon
+Chat/Message/ImpressionCount
+Chat/Message/ShareIcon
+Chat/Input/Text/IconAttachment
+Chat/Input/Text/IconMicrophone

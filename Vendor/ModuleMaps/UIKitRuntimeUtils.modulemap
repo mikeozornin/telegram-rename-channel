@@ -1,0 +1,13 @@
+framework module UIKitRuntimeUtils {
+  header "NSBag.h"
+  header "NSWeakReference.h"
+  header "NotificationCenterUtils.h"
+  header "UIBarButtonItem+Proxy.h"
+  header "UIButton+LegacyAppearance.h"
+  header "UIKitUtils.h"
+  header "UIMenuItem+Icons.h"
+  header "UINavigationItem+Proxy.h"
+  header "UIViewController+Navigation.h"
+  header "UIWindow+OrientationChange.h"
+  export *
+}

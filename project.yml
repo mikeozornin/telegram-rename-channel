@@ -1,0 +1,179 @@
+# ChannelRename prototype. Generate with: xcodegen generate --spec prototypes/ChannelRename/project.yml
+# Telegram's Display + AsyncDisplayKit (and their leaves) plus ComponentFlow + GlassBackgroundComponent are compiled
+# from R/submodules as frameworks, without Bazel. Run Tools/prepare.sh after updating the Telegram sources.
+name: ChannelRename
+options:
+  deploymentTarget:
+    iOS: '26.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    CODE_SIGNING_ALLOWED: NO
+    GENERATE_INFOPLIST_FILE: YES
+    SKIP_INSTALL: YES
+    ONLY_ACTIVE_ARCH: YES
+    DEFINES_MODULE: YES
+    TARGETED_DEVICE_FAMILY: '1'
+    CLANG_CXX_LANGUAGE_STANDARD: c++17
+    GCC_PREPROCESSOR_DEFINITIONS: ['$(inherited)', 'MINIMAL_ASDK=1']
+    CLANG_ENABLE_MODULES: YES
+    CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: NO
+    OTHER_LDFLAGS: ['$(inherited)', '-framework', 'QuartzCore', '-framework', 'CoreText', '-framework', 'CoreMedia', '-framework', 'UIKit', '-framework', 'CoreGraphics', '-framework', 'WebKit']
+    SWIFT_SUPPRESS_WARNINGS: YES
+    GCC_WARN_INHIBIT_ALL_WARNINGS: YES
+targets:
+  AsyncDisplayKit:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/AsyncDisplayKit/Source
+        excludes: ['PublicHeaders/**']
+      - path: ../../submodules/AsyncDisplayKit/Source/PublicHeaders/AsyncDisplayKit
+        headerVisibility: public
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.AsyncDisplayKit
+        HEADER_SEARCH_PATHS: $(SRCROOT)/../../submodules/AsyncDisplayKit/Source/PublicHeaders $(SRCROOT)/../../submodules/AsyncDisplayKit/Source
+  ObjCRuntimeUtils:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/ObjCRuntimeUtils/Source/ObjCRuntimeUtils
+        headerVisibility: public
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.ObjCRuntimeUtils
+        MODULEMAP_FILE: Vendor/ModuleMaps/ObjCRuntimeUtils.modulemap
+  UIKitRuntimeUtils:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/UIKitRuntimeUtils/Source/UIKitRuntimeUtils
+        headerVisibility: public
+    dependencies: [{target: AsyncDisplayKit}, {target: ObjCRuntimeUtils}, {sdk: WebKit.framework}]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.UIKitRuntimeUtils
+        MODULEMAP_FILE: Vendor/ModuleMaps/UIKitRuntimeUtils.modulemap
+        HEADER_SEARCH_PATHS: $(SRCROOT)/../../submodules/UIKitRuntimeUtils/Source
+  AppBundle:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/AppBundle/Sources
+      - path: ../../submodules/AppBundle/PublicHeaders/AppBundle
+        headerVisibility: public
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.AppBundle}}
+  SwiftSignalKit:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/SSignalKit/SwiftSignalKit/Source]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.SwiftSignalKit}}
+  Markdown:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/Markdown/Source]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.Markdown}}
+  Display:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/Display/Source
+        excludes: ['ReservedArea.swift', 'WindowContent.swift']
+      - Vendor/DisplayPatched
+    dependencies: [{target: AsyncDisplayKit}, {target: ObjCRuntimeUtils}, {target: UIKitRuntimeUtils}, {target: AppBundle}, {target: SwiftSignalKit}, {target: Markdown}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.Display}}
+  ComponentFlow:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/ComponentFlow/Source]
+    dependencies: [{target: Display}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.ComponentFlow}}
+  ComponentDisplayAdapters:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/Components/ComponentDisplayAdapters/Sources]
+    dependencies: [{target: Display}, {target: ComponentFlow}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.ComponentDisplayAdapters}}
+  MeshTransformApi:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ../../submodules/TelegramUI/Components/MeshTransform/MeshTransformApi/Sources
+      - path: ../../submodules/TelegramUI/Components/MeshTransform/MeshTransformApi/PublicHeaders/MeshTransformApi
+        headerVisibility: public
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.MeshTransformApi}}
+  MeshTransform:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/TelegramUI/Components/MeshTransform/Sources]
+    dependencies: [{target: MeshTransformApi}, {target: Display}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.MeshTransform}}
+  GlassBackgroundComponent:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/TelegramUI/Components/GlassBackgroundComponent/Sources]
+    dependencies: [{target: Display}, {target: ComponentFlow}, {target: ComponentDisplayAdapters}, {target: MeshTransform}, {target: UIKitRuntimeUtils}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.GlassBackgroundComponent}}
+  GradientBackground:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/GradientBackground/Sources]
+    dependencies: [{target: Display}, {target: AsyncDisplayKit}, {target: SwiftSignalKit}]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.GradientBackground
+        SWIFT_OPTIMIZATION_LEVEL: -O  # as in Telegram's BUILD (copts -O)
+  TabBarLayout:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/TelegramUI/Components/TabBarLayout/Sources]
+    dependencies: [{target: Display}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.TabBarLayout}}
+  LiquidLens:
+    type: framework
+    platform: iOS
+    sources: [../../submodules/TelegramUI/Components/LiquidLens/Sources]
+    dependencies: [{target: Display}, {target: ComponentFlow}, {target: GlassBackgroundComponent}]
+    settings: {base: {PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRename.LiquidLens}}
+  ChannelRename:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+      - Resources
+    dependencies:
+      - target: Display
+      - target: AsyncDisplayKit
+      - target: ComponentFlow
+      - target: GlassBackgroundComponent
+      - target: UIKitRuntimeUtils
+      - target: SwiftSignalKit
+      - target: ObjCRuntimeUtils
+      - target: AppBundle
+      - target: Markdown
+      - target: ComponentDisplayAdapters
+      - target: MeshTransform
+      - target: MeshTransformApi
+      - target: GradientBackground
+      - target: TabBarLayout
+      - target: LiquidLens
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.telegram.ChannelRenamePrototype
+        PRODUCT_NAME: ChannelRename
+        INFOPLIST_KEY_CFBundleDisplayName: ChannelRename
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleDarkContent
+        INFOPLIST_KEY_UIUserInterfaceStyle: Light
+        INFOPLIST_KEY_UIFileSharingEnabled: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: ''
+schemes:
+  ChannelRename:
+    build:
+      targets:
+        ChannelRename: all
+    run:
+      config: Debug
