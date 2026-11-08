@@ -6,9 +6,7 @@ By @mikeozornin.
 
 ## Demo
 
-[![Demo video: renaming a channel for yourself](media/channel-rename-demo-poster.jpg)](media/channel-rename-demo.mp4)
-
-[Watch the demo video](media/channel-rename-demo.mp4) (68 s, recorded in the iOS simulator).
+https://github.com/user-attachments/assets/80853a06-8684-4546-97ac-5230032919c2
 
 ## Setup
 
