@@ -4,6 +4,12 @@ Rename any channel or group just for yourself. Your name shows up in the chat li
 
 By @mikeozornin.
 
+## Demo
+
+[![Demo video: renaming a channel for yourself](media/channel-rename-demo-poster.jpg)](media/channel-rename-demo.mp4)
+
+[Watch the demo video](media/channel-rename-demo.mp4) (68 s, recorded in the iOS simulator).
+
 ## Setup
 
 This repo is meant to live inside a clone of Telegram-iOS:
